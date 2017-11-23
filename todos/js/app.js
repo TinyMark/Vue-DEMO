@@ -3,77 +3,96 @@
 
 	// Your starting point. Enjoy the ride!
 
-	new Vue({
-		el: '#App',
+	var vm = new Vue({
+		el: '#app',
 		data: {
 			list: [
 				{ text: '吃饭', status: true },
-				{ text: '睡觉', status: true },
+				{ text: '睡觉', status: false },
 				{ text: '打豆豆', status: false }
 			],
 			newText: '',
-			editId: '',
+			selectNum: '',
+			updateText: '',
 			keyWord: 'all',
-			leftNum: 0
+			getLeft: ''
 		},
 		methods: {
+			strLint(str) {
+				return str.trim();
+			},
 			addList() {
 				event.preventDefault();
-				if (!this.newText.trim()) return false;
-				this.list.push({
-					text: this.newText,
-					status: false
-				});
-				this.newText = '';
+				var nt = this.strLint(this.newText)
+				if (nt) {
+					this.list.push({
+						text: nt,
+						status: false
+					});
+					this.newText = '';
+				}
 			},
 			delList(i) {
-				this.list.splice(i, 1);
-				if (!this.list.length) this.leftNum = 0
+				this.list.splice(i, 1)
+			},
+			editList(i) {
+				this.selectNum = i;
+				this.updateText = this.list[i].text;
 			},
 			updateList(i) {
 				event.preventDefault();
-				if (!this.list[i].text.trim()) this.delList(i);
-				this.editId = '';
+				var nt = this.strLint(this.updateText);
+				if (nt) {
+					this.list[i].text = nt;
+				} else {
+					this.delList(i)
+				}
+				this.updateText = '';
+				this.selectNum = '';
 			},
-			query(i) {
+			delCompleted() {
+				this.list = this.list.filter(v => !v.status)
+			},
+			// getLeft() {
+			// 	return this.list.filter(v => !v.status).length
+			// },
+			isShow(v) {
 				switch (this.keyWord) {
 					case 'active':
-						this.leftNum = this.list.filter(v => !v.status).length;
-						return this.list[i].status ? false : true
+						this.getLeft = this.list.filter(v => !v.status).length;
+						return !v.status ? true : false
 						break;
 					case 'completed':
-						this.leftNum = this.list.filter(v => v.status).length;
-						return this.list[i].status ? true : false
+						this.getLeft = this.list.filter(v => v.status).length;
+						return v.status ? true : false
 						break;
 					default:
-						this.leftNum = this.list.length;
-						return true;
+						// this.getLeft = this.list.length;
+						this.getLeft = this.list.filter(v => !v.status).length;
+						return true
 						break;
 				}
-			},
-			clearCompleted() {
-				this.list = this.list.filter(v => !v.status)
 			}
 		},
 		computed: {
 			toggleAll: {
 				get() {
-					if (this.list.length == 0) return false;
+					if (!this.list.length) return false
 					return this.list.filter(v => !v.status).length ? false : true
 				},
 				set(value) {
 					this.list.forEach(function (v) {
-						v.status = value
-					});
+						v.status = value;
+					}, this);
 				}
 			}
 		},
 		created() {
-			var cache = JSON.parse(localStorage.getItem('todoMVC'));
-			this.list = cache ? cache : this.list
+			var todoList = JSON.parse(localStorage.getItem('todoList'));
+			this.list = todoList ? todoList : this.list
 		},
 		updated() {
-			localStorage.setItem('todoMVC', JSON.stringify(this.list))
+			localStorage.setItem('todoList', JSON.stringify(this.list))
 		}
 	})
 
