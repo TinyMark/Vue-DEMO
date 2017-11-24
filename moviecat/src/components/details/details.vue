@@ -1,163 +1,60 @@
 <template>
-    <div class="detail">
-        <h1>银翼杀手2049</h1>
-        <div class="dt-info">
-            <div class="dti-i"><img src="http://img1.doubanio.com/view/photo/s_ratio_poster/public/p2501864539.jpg" alt=""></div>
-            <div class="dti-w">
-                <p>
-                    <strong>导演：</strong>
-                    <span v-for="( v,i ) in data.directors" :key="i">{{v.name}}</span>
-                </p>
-                <p>
-                    <strong>主演：</strong>
-                    <span v-for="(v,i) in data.casts" :key="i">{{ v.name | formatArr(v,i) }}</span>
-                </p>
-                <p>
-                    <strong>类型：</strong>科幻、惊悚</p>
-                <p>
-                    <strong>国家：</strong>美国、加拿大、英国</p>
-                <p>
-                    <strong>评分：</strong>{{data.rating.average}}</p>
-                <p>
-                    <strong>时间：</strong>2017</p>
-                <p>
-                    <strong>又名：</strong> 《银翼杀手2》、《Blade Runner 2》</p>
-            </div>
-        </div>
-        <h3>剧情简介:</h3>
-        <p style="color:#676767;text-indent: 2em;">故事发生在大断电30年后。复制人K（瑞恩·高斯林 Ryan Gosling 饰）是新一代的银翼杀手，在如今的世界里，人类和复制人之间的界限划分的更加明确，复制人从刚一制造出来就被灌输了服务于人类的思想，绝对不被允许产生人类的感情。 某日，一具女性复制人的遗骨被挖掘了出来，令陆军中尉乔伊（罗宾·怀特 Robin Wright 饰）感到震惊的是，这名女性复制人生前不仅怀过孕，还将孩子生了下来，这个孩子的存在将会彻底破坏政府苦心经营的规则和秩序。乔伊命令K找出这个孩子，并将他杀死。在一间废弃的农场里，K发现了一些线索，然而，这些线索竟然和他被植入的过去的记忆有着千丝万缕的关联。与此同时，复制人尼安德（杰瑞德·莱托 Jared Leto 饰）和他的手下拉芙（西尔维娅·侯克斯 Sylvia Hoeks 饰）也在寻找着这个孩子的下落。©豆瓣</p>
-    </div>
+	<div class="detail">
+		<h1>{{ dtls.title }}</h1>
+		<div class="dt-info">
+			<div class="dti-i"><img :src=" dtls.images.medium | changeImg " :alt="dtls.title"></div>
+			<div class="dti-w">
+				<p>
+					<strong>导演：</strong>
+					<span>{{ dtls.directors | formatArrName }}</span>
+				</p>
+				<p>
+					<strong>主演：</strong>
+					<span>{{ dtls.casts | formatArrName }}</span>
+
+				</p>
+				<p>
+					<strong>类型：</strong>{{ dtls.genres | formatArrName }}</p>
+				<p>
+					<strong>国家：</strong>{{ dtls.countries | formatArrName }}</p>
+				<p>
+					<strong>评分：</strong>{{ dtls.rating.average }}</p>
+				<p>
+					<strong>时间：</strong>{{ dtls.year }}</p>
+				<p>
+					<strong>又名：</strong>{{ dtls.aka | formatArrName }}</p>
+			</div>
+		</div>
+		<h3>剧情简介:</h3>
+		<p style="color:#676767;text-indent: 2em;">{{ dtls.summary }}</p>
+	</div>
 </template>
 
 <script>
-    export default {
-      data() {
-        return {
-          data: {}
-        };
-      },
-      methods: {},
-      filters: {
-        changeImg(str) {
-          return str.replace(str[10], 1);
-        },
-        formatArr(v, i) {
-          console.log(v, i);
-          console.log(this);
-          return v;
-        }
-      },
-      created() {
-        // this.$jsonp(this.api.details + "/" + this.$route.params.id).then(res => {
-        //   this.data = res;
-        //   console.log(res);
-        // });
-        this.data = {
-          rating: { max: 10, average: 8.5, stars: "45", min: 0 },
-          reviews_count: 1671,
-          wish_count: 51508,
-          douban_site: "",
-          year: "2017",
-          images: {
-            small:
-              "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2501864539.jpg",
-            large:
-              "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2501864539.jpg",
-            medium:
-              "http://img3.doubanio.com/view/photo/s_ratio_poster/public/p2501864539.jpg"
-          },
-          alt: "https://movie.douban.com/subject/10512661/",
-          id: "10512661",
-          mobile_url: "https://movie.douban.com/subject/10512661/mobile",
-          title: "\u94f6\u7ffc\u6740\u624b2049",
-          do_count: null,
-          share_url: "http://m.douban.com/movie/subject/10512661",
-          seasons_count: null,
-          schedule_url: "https://movie.douban.com/subject/10512661/cinema/",
-          episodes_count: null,
-          countries: ["\u7f8e\u56fd", "\u52a0\u62ff\u5927", "\u82f1\u56fd"],
-          genres: ["\u79d1\u5e7b", "\u60ca\u609a"],
-          collect_count: 112297,
-          casts: [
-            {
-              alt: "https://movie.douban.com/celebrity/1012531/",
-              avatars: {
-                small:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p938.jpg",
-                large:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p938.jpg",
-                medium:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p938.jpg"
-              },
-              name: "\u745e\u6069\u00b7\u9ad8\u65af\u6797",
-              id: "1012531"
-            },
-            {
-              alt: "https://movie.douban.com/celebrity/1009238/",
-              avatars: {
-                small:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1452760482.06.jpg",
-                large:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1452760482.06.jpg",
-                medium:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1452760482.06.jpg"
-              },
-              name: "\u54c8\u91cc\u68ee\u00b7\u798f\u7279",
-              id: "1009238"
-            },
-            {
-              alt: "https://movie.douban.com/celebrity/1045259/",
-              avatars: {
-                small:
-                  "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47200.jpg",
-                large:
-                  "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47200.jpg",
-                medium:
-                  "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p47200.jpg"
-              },
-              name: "\u5b89\u5a1c\u00b7\u5fb7\u00b7\u963f\u739b\u65af",
-              id: "1045259"
-            },
-            {
-              alt: "https://movie.douban.com/celebrity/1018643/",
-              avatars: {
-                small:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1464533510.69.jpg",
-                large:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1464533510.69.jpg",
-                medium:
-                  "http://img3.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1464533510.69.jpg"
-              },
-              name: "\u897f\u5c14\u7ef4\u5a05\u00b7\u4faf\u514b\u65af",
-              id: "1018643"
-            }
-          ],
-          current_season: null,
-          original_title: "Blade Runner 2049",
-          summary:
-            "\u6545\u4e8b\u53d1\u751f\u5728\u5927\u65ad\u753530\u5e74\u540e\u3002\u590d\u5236\u4ebaK\uff08\u745e\u6069\u00b7\u9ad8\u65af\u6797 Ryan Gosling \u9970\uff09\u662f\u65b0\u4e00\u4ee3\u7684\u94f6\u7ffc\u6740\u624b\uff0c\u5728\u5982\u4eca\u7684\u4e16\u754c\u91cc\uff0c\u4eba\u7c7b\u548c\u590d\u5236\u4eba\u4e4b\u95f4\u7684\u754c\u9650\u5212\u5206\u7684\u66f4\u52a0\u660e\u786e\uff0c\u590d\u5236\u4eba\u4ece\u521a\u4e00\u5236\u9020\u51fa\u6765\u5c31\u88ab\u704c\u8f93\u4e86\u670d\u52a1\u4e8e\u4eba\u7c7b\u7684\u601d\u60f3\uff0c\u7edd\u5bf9\u4e0d\u88ab\u5141\u8bb8\u4ea7\u751f\u4eba\u7c7b\u7684\u611f\u60c5\u3002\n\u67d0\u65e5\uff0c\u4e00\u5177\u5973\u6027\u590d\u5236\u4eba\u7684\u9057\u9aa8\u88ab\u6316\u6398\u4e86\u51fa\u6765\uff0c\u4ee4\u9646\u519b\u4e2d\u5c09\u4e54\u4f0a\uff08\u7f57\u5bbe\u00b7\u6000\u7279 Robin Wright \u9970\uff09\u611f\u5230\u9707\u60ca\u7684\u662f\uff0c\u8fd9\u540d\u5973\u6027\u590d\u5236\u4eba\u751f\u524d\u4e0d\u4ec5\u6000\u8fc7\u5b55\uff0c\u8fd8\u5c06\u5b69\u5b50\u751f\u4e86\u4e0b\u6765\uff0c\u8fd9\u4e2a\u5b69\u5b50\u7684\u5b58\u5728\u5c06\u4f1a\u5f7b\u5e95\u7834\u574f\u653f\u5e9c\u82e6\u5fc3\u7ecf\u8425\u7684\u89c4\u5219\u548c\u79e9\u5e8f\u3002\u4e54\u4f0a\u547d\u4ee4K\u627e\u51fa\u8fd9\u4e2a\u5b69\u5b50\uff0c\u5e76\u5c06\u4ed6\u6740\u6b7b\u3002\u5728\u4e00\u95f4\u5e9f\u5f03\u7684\u519c\u573a\u91cc\uff0cK\u53d1\u73b0\u4e86\u4e00\u4e9b\u7ebf\u7d22\uff0c\u7136\u800c\uff0c\u8fd9\u4e9b\u7ebf\u7d22\u7adf\u7136\u548c\u4ed6\u88ab\u690d\u5165\u7684\u8fc7\u53bb\u7684\u8bb0\u5fc6\u6709\u7740\u5343\u4e1d\u4e07\u7f15\u7684\u5173\u8054\u3002\u4e0e\u6b64\u540c\u65f6\uff0c\u590d\u5236\u4eba\u5c3c\u5b89\u5fb7\uff08\u6770\u745e\u5fb7\u00b7\u83b1\u6258 Jared Leto \u9970\uff09\u548c\u4ed6\u7684\u624b\u4e0b\u62c9\u8299\uff08\u897f\u5c14\u7ef4\u5a05\u00b7\u4faf\u514b\u65af Sylvia Hoeks \u9970\uff09\u4e5f\u5728\u5bfb\u627e\u7740\u8fd9\u4e2a\u5b69\u5b50\u7684\u4e0b\u843d\u3002\u00a9\u8c46\u74e3",
-          subtype: "movie",
-          directors: [
-            {
-              alt: "https://movie.douban.com/celebrity/1028333/",
-              avatars: {
-                small:
-                  "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451296171.85.jpg",
-                large:
-                  "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451296171.85.jpg",
-                medium:
-                  "http://img7.doubanio.com/view/celebrity/s_ratio_celebrity/public/p1451296171.85.jpg"
-              },
-              name: "\u4e39\u5c3c\u65af\u00b7\u7ef4\u4f26\u7ebd\u74e6",
-              id: "1028333"
-            }
-          ],
-          comments_count: 51569,
-          ratings_count: 104728,
-          aka: ["\u94f6\u7ffc\u6740\u624b2", "Blade Runner 2"]
-        };
-      }
-    };
+	export default {
+	  data() {
+	    return {
+	      dtls: ""
+	    };
+	  },
+	  methods: {},
+	  filters: {
+	    changeImg(str) {
+	      return str.replace(/\d/, 1);
+	    },
+	    formatArrName(arr) {
+	      return arr
+	        .map(v => (v.name ? v.name : v))
+	        .toString()
+	        .replace(/,/g, "、");
+	    }
+	  },
+	  created() {
+	    this.$jsonp(this.api.details + "/" + this.$route.params.id).then(res => {
+	      this.dtls = res;
+	    });
+	  }
+	};
 </script>
 
 <style>
