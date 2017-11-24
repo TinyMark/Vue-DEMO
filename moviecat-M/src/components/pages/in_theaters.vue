@@ -1,8 +1,6 @@
 <template>
-    <!--电影列表开始-->
     <div class="list">
         <ul>
-
             <li v-for="(v,i) in list" :key="i">
                 <a href="/details">
                     <img :src="v.images.medium" alt="">
@@ -17,62 +15,60 @@
                     </div>
                 </div>
             </li>
-
         </ul>
         <div class="paging">
-            <label>总共：{{ total }}条记录,第{{ currentPage+1 }}/{{ togglePage }}页;</label>
-            <!-- 加上disable类样式，表示按钮禁用状态 -->
+            <label>总共：{{ total }}条记录,第{{ currentPage+1 }}/{{ totalPage }}页;</label>
             <button :class="{'prev':true, 'disable':currentPage == 0}" @click="getPage(--currentPage)">上一页</button>
-            <button :class="{'next':true, 'disable':currentPage == togglePage-1 }" @click="getPage(++currentPage)">下一页</button>
+            <button :class="{'next':true, 'disable':currentPage == totalPage-1 }" @click="getPage(++currentPage)">下一页</button>
         </div>
     </div>
-    <!--电影列表结束-->
 </template>
 
 <script>
-    export default {
-      data() {
+export default {
+    data() {
         return {
-          total: 0,
-          list: "",
-          pageNum: 10,
-          currentPage: 0,
-          togglePage: 0
+            list: [],
+            currentPage: 0,
+            pageNum: 10,
+            total: 0,
+            totalPage: 0
         };
-      },
-      created() {
-        this.getPage(this.currentPage, function(data, _this) {
-          _this.total = data.total;
-          _this.togglePage = Math.ceil(data.total / _this.pageNum);
+    },
+    created() {
+        this.getPage(this.currentPage, function(res, _this) {
+            console.log(res, _this);
+            _this.total = res.total;
+            _this.totalPage = Math.ceil(res.total / _this.pageNum);
         });
-      },
-      methods: {
+    },
+    methods: {
         getPage(currentPage, callback) {
-          console.log(currentPage);
-          currentPage = currentPage <= 0 ? 0 : currentPage;
-        //   currentPage = currentPage >= this.togglePage - 1 ? this.togglePage - 1 : currentPage;
-          console.log(currentPage);
-
-          this.$jsonp(this.api.in_theaters, {
-            city: "广州",
-            count: this.pageNum,
-            start: currentPage * this.pageNum
-          }).then(res => {
-            this.list = res.subjects;
-            if (callback) {
-              console.log(res);
-              var _this = this;
-              callback(res, _this);
-            }
-          });
+            console.log(currentPage);
+            this.currentPage = currentPage =
+                currentPage <= 0
+                    ? 0
+                    : currentPage >= this.totalPage - 1
+                      ? this.totalPage - 1
+                      : currentPage;
+            console.log(currentPage);
+            this.$jsonp(this.api.in_theaters, {
+                city: "广州",
+                start: this.pageNum * currentPage,
+                count: this.pageNum
+            }).then(res => {
+                this.list = res.subjects;
+                var _this = this;
+                callback && callback(res, _this);
+            });
         }
-      },
-      filters: {
+    },
+    filters: {
         formatArr(arr) {
-          return arr.toString().replace(/,/g, "、");
+            return arr.toString().replace(/,/g, "、");
         }
-      }
-    };
+    }
+};
 </script>
 
 <style>
