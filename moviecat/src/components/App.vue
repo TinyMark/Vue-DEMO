@@ -1,16 +1,31 @@
 <template>
-    <div id="warp">
-        <mc-header></mc-header>
-        <mc-content></mc-content>
-        <mc-footer></mc-footer>
+    <div class="warp">
+        <mcHeader></mcHeader>
+        <mcContent></mcContent>
+        <mcFooter></mcFooter>
     </div>
 </template>
 
 <script>
-    export default {};
+import header from '../components/common/header.vue';
+import content from '../components/common/content.vue';
+import footer from '../components/common/footer.vue';
+
+export default {
+    data() {
+        return {
+
+        }
+    },
+    components: {
+        'mcHeader': header,
+        'mcContent': content,
+        'mcFooter': footer,
+    }
+}
 </script>
 
 <style>
-    @import "../assets/css/reset.css";
-    @import "../assets/css/wap.css";
+@import "../assets/css/reset.css";
+@import "../assets/css/wap.css";
 </style>

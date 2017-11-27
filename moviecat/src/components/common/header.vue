@@ -6,8 +6,8 @@
                 <img src="../../assets/img/logo.png" alt="">
             </router-link>
             <div class="search">
-                <input class="my-input" type="text" placeholder="电影搜索">
-                <button>搜索</button>
+                <input class="my-input" type="text" placeholder="电影搜索" v-model="searchText">
+                <button type="submit" @click="search">搜索</button>
             </div>
         </div>
         <nav class="nav">
@@ -28,10 +28,26 @@
             </ul>
         </nav>
     </div>
+    <!-- 顶部导航栏结束 -->
 </template>
 
 <script>
-    export default {};
+export default {
+    data() {
+        return {
+            searchText: ''
+        }
+    },
+    methods: {
+        search() {
+            if (!this.searchText.trim()) {
+                return false;
+            }
+            this.$store.state.searchWord = this.searchText;
+            this.$router.push('/search');
+        }
+    }
+}
 </script>
 
 <style>

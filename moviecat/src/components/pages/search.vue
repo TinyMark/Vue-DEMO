@@ -4,9 +4,9 @@
         <ul>
 
             <li v-for="(v,i) in list" :key="i">
-                <router-link :to="{path:'/detail/'+v.id}">
-                    <img :src="v.images.medium" alt="">
-                </router-link>
+				<router-link :to="{path:'/detail/'+v.id}">
+					<img :src="v.images.medium" alt="">
+				</router-link>
                 <div class="meta">
                     <h4>
                         <span>{{ v.title }}</span>
@@ -44,12 +44,11 @@ export default {
         getList(currentPage, callback) {
             this.currentPage = currentPage <= 0 ? 0 : (currentPage >= this.totalPage - 1 ? this.totalPage - 1 : currentPage);
 
-            this.$jsonp(this.api.top250, {
-                city: '广州',
+            this.$jsonp(this.api.search, {
+                q: this.$store.state.searchWord,
                 count: this.count,
                 start: this.currentPage * this.count
             }).then(res => {
-
                 this.list = res.subjects;
                 callback && callback(res)
             });
@@ -62,10 +61,22 @@ export default {
     },
     created() {
         this.getList(this.currentPage, (res) => {
-            console.log(res);
             this.total = res.total;
             this.totalPage = Math.ceil(res.total / this.count);
         })
+    },
+    computed: {
+        getWord() {
+            return this.$store.state.searchWord
+        }
+    },
+    watch: {
+        getWord() {
+            this.getList(0, (res) => {
+                this.total = res.total;
+                this.totalPage = Math.ceil(res.total / this.count);
+            })
+        }
     }
 }
 </script>
@@ -73,3 +84,4 @@ export default {
 <style>
 
 </style>
+

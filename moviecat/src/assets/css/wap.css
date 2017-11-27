@@ -624,7 +624,7 @@ body {
     font-size: 20px;
 }
 
-.spinner>div {
+.spinner > div {
     background-color: #669cf4;
     height: 100%;
     width: 12px;
